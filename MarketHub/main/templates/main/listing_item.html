@@ -1,0 +1,59 @@
+{% extends 'main/base.html'%}
+
+{% block title%}Listing Item{% endblock %}
+
+{% block content %}
+
+<div class="item-container">
+
+    <div>
+        <h3 class="mt-2 mb-4 item-title"> {{ listing.title }} </h3>
+
+        <div class="listing-image-container-scale">
+            <img class="img-listing-item" src="../media/{{ listing.image }}">
+        </div>
+
+
+        <div class="buy-section mt-3 mb-2">
+            <h5> NZD ${{ listing.price }} </h5>
+
+            <form method="post">
+                {% csrf_token %}
+
+                {% if request.user != listing.author %}
+
+                    {% if order_exists %}
+                        <button type="submit" class="btn btn-primary buy-btn" disabled>Query Seller</button>
+                    {% else %}
+                        <button type="submit" class="btn btn-primary buy-btn">Query Seller</button>
+                    {% endif %}
+
+                {% else %}
+
+                <button type="submit" class="btn btn-primary buy-btn" disabled>Query Seller</button>
+                {% endif %}
+            </form>
+
+        </div>
+
+
+        <p> {{ listing.location }} </p>
+
+        <p> Category {{ listing.type }} </p>
+
+        <p> {{ listing.finish_at }} </p>
+
+        <p class="line">{{ listing.description }}</p>
+
+
+    </div>
+
+    <div class="listing-image-container">
+        <img class="img-listing-item" src="../media/{{ listing.image }}">
+    </div>
+
+
+</div>
+
+
+{% endblock %}

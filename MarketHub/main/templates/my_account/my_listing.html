@@ -1,0 +1,43 @@
+{% extends 'main/base.html'%}
+{% block title%}My listings{% endblock %}
+{% block content %}
+
+<div class="listing-container">
+{% for listing in listings %}
+
+{% if user == listing.author %}
+
+  
+      <div class="card mt-2">
+              <img class="img-listing" src="media/{{ listing.image }}"> 
+              <div class="card-body">
+                
+                <div class="card-title">
+                  <a class="listing-link" href="{% url 'listing-item' listing.id %}"> <h6 class="card-title">{{ listing.title }}</h6> </a>
+                  <a class="trans-link" href="{% url 'listing-querys' listing.id %}"> <i class="fa fa-comment"></i>  </a>
+                </div>
+              
+              
+                  <p class="card-text"> $ {{ listing.price }} <br> {{ listing.location }}</p>
+
+                        <div class="crud-container">
+                                <!-- Delete -->
+                            <form method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="rm-btn trans-link" name="listing-id" value="{{listing.id}}"><i class="fa fa-trash-o"></i></button>
+                            </form>
+                            
+                            <a class="trans-link" href="{% url 'update-listing' listing.id %}"> <i class="fa fa-edit"></i>  </a>
+                        </div>   
+              </div>  
+      </div>     
+ 
+
+
+{% endif %}
+
+
+{% endfor %}
+</div>
+
+{% endblock  %}

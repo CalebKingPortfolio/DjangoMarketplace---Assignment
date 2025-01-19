@@ -1,0 +1,25 @@
+{% extends 'main/base.html'%}
+
+{% block content %}
+     
+        {% if searched %}
+
+            <div class="listing-container">
+            {% for listing in listings%}
+           
+                <div class="card mt-2">
+                    <img class="img-listing" src="media/{{ listing.image }}"> 
+                    <div class="card-body">
+                        <a class="listing-link" href="{% url 'listing-item' pk=listing.id %}"> <h6 class="card-title">{{ listing.title }}</h6> </a>
+                        <p class="card-text"> $ {{ listing.price }} <br> {{ listing.location }}</p>
+                    </div>      
+                </div>
+            {% endfor %}  
+            </div>
+
+        {% else %}   
+            <center><h4>Hey! You Forgot To Search For A Listing...</h4></center>
+        {% endif %}   
+
+
+{% endblock  %}

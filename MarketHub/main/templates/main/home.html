@@ -1,0 +1,26 @@
+{% extends 'main/base.html'%} <!-- Extends the base HTML  -->
+{% block title%} Home Page {% endblock %} <!-- Page Title  -->
+{% block content %} <!-- Start of Block Content -->
+
+<div class="listing-container"> <!-- Start of listing container -->
+    {% for listing in listings %} <!-- Start of For loop that loops through the listings -->
+        {% if listing.status == "Selling" %} <!-- Start of if statement that checks if there are products selling-->
+        <div class="card mt-2">
+            <img class="img-listing" src="media/{{ listing.image }}">
+                <div class="card-body">
+                    <a class="listing-link" href="{% url 'listing-item' listing.id %}"> <h6 class="card-title">{{ listing.title }}</h6> </a>
+                    <p class="card-text"> $ {{ listing.price }} <br> {{ listing.location }}</p>     
+                </div>       
+        </div>
+
+        {% endif %} <!-- End of if statement that checks if there are products selling-->
+
+
+    {% endfor %} <!-- End of For loop that loops through the listings -->
+
+
+</div> <!-- End of listing container -->
+
+
+{% endblock  %} <!-- End of Block Content -->
+

@@ -1,0 +1,38 @@
+{% extends 'main/base.html'%}
+{% block title%}My Orders{% endblock %}
+{% block content %}
+
+<div class="order-container">
+{% for order in orders %}
+
+
+            {% if request.user == order.user_id %}
+                {% for listing in listings %}
+                    {% if order.listing_id == listing %}
+
+                        <div class="card mt-2">
+                            <div class="card-body-two card-request">
+
+                                <img class="img-my-listing" src="media/{{ listing.image }}"> 
+                                <div class="class-text">
+                                <a class="listing-link" href="{% url 'listing-item' listing.id %}"> <h6 class="card-title">{{ listing.title }}</h6> </a>
+                                    <p class="card-text"> {{ listing.location }}</p>  
+                                    <a href="{% url 'listing-messages' pk=order.id %}"> <i class="fa fa-comment"> View Messages</i>  </a>
+                                </div>  
+                            </div>
+                        </div>     
+
+                        {% endif %}
+
+                    {% endfor %}
+
+
+
+            
+            {% endif %}
+
+{% endfor %}
+</div>
+
+
+{% endblock  %} 

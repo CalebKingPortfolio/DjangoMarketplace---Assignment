@@ -1,0 +1,64 @@
+{% extends 'main/base.html'%}
+{% block title%}Listing Message{% endblock %}
+
+{% load crispy_forms_tags %} 
+
+{% block content %}
+
+{% if request.user == order.user_id or request.user == order.listing_id.author %}
+    {% for message in messages %}
+        {% if request.user == order.user_id %}
+            {# Messages sent by the buyer #}
+            {% if request.user == message.user_id %}
+        
+
+            <div class="message-container-two">
+               
+
+                <div class="right-message">
+                    <div class="text-container">
+                        <div><p>{{ message.message }}</p></div>
+                    </div>
+                </div>
+                <img class="profile-img-messages" src="/media/profile/blank_profile.png" alt="Market Hub Logo"> <!-- Market Hub Logo -->
+            </div>
+
+            {% else %}
+            <div class="message-container">
+                <img class="profile-img-messages" src="/media/profile/blank_profile.png" alt="Market Hub Logo"> <!-- Market Hub Logo -->
+                <div class="left-message">
+                    <p>{{ message.message }}</p>
+                </div>
+            </div>
+            {% endif %}
+        {% else %}
+            {# Messages sent by the seller #}
+            {% if request.user == order.listing_id.author %}
+                {% if request.user == message.user_id %}
+                    <div class="message-container-two">
+                        <div class="right-message">
+                            <p>{{ message.message }}</p>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="message-container">
+                        <div class="left-message">      
+                            <p>{{ message.message }}</p>   
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+
+    <form method="post" class="message-form">
+        {% csrf_token %}{{form|crispy}}
+        <button type="submit" class="btn btn-primary"> Send <i class="fa fa-send-o"></i> </button>
+    </form>
+    
+{% else %}
+    <p>You are not authorized to view this page.</p>
+{% endif %}
+
+
+{% endblock  %} 

@@ -1,0 +1,139 @@
+{% load static %} <!-- Tells the template engine to use the files in the static folder -->
+<!DOCTYPE html>
+<html lang="en"> <!-- Specifies the language code of the page-->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" , href="{% static 'css/bootstrap.css' %}"> <!-- Links the bootstrap style sheet to the html -->
+  <link rel="stylesheet" , href="{% static 'css/main.css' %}"> <!-- Links the main style sheet to the html -->
+  <link rel="stylesheet" , href="{% static 'css/listing-cards.css' %}">
+  <!-- Links the listing cards style sheet to the html -->
+  <link rel="stylesheet" , href="{% static 'css/dashboard.css' %}"> <!-- Links the dashboard style sheet to the html -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- Links the fontawsome style sheet to the html -->
+  <title>{% block title %} My Site {% endblock %}</title> <!-- Title of the Page -->
+</head>
+
+<body>
+
+  <nav class="navbar navbar-dark sticky-top main-navbar flex-md-nowrap shadow"> <!-- Start of Navbar -->
+    <a class="navbar-brand" href="/home">
+      <img class="nav-logo" src="/media/logo/Market_Hub_Logo.png" alt="Market Hub Logo"> <!-- Market Hub Logo -->
+      <span class="logo-text">Market Hub</span>
+    </a> <!-- Logo -->
+
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+      data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <!-- Start Button Used for scaling -->
+      <span class="navbar-toggler-icon"></span>
+    </button> <!-- End Button -->
+
+    <form class="search-container" method="POST" action="{% url 'search-listing'%} "> <!--  Start of Search Bar Form -->
+      {% csrf_token %}
+      <input class="form-control search-bar" name="searched" type="search" placeholder="Search" value="{{ searched }}">
+      <!-- Search Input-->
+      <button class="btn  btn-light btn-search" type="submit"> <i class="fa fa-search"></i> </button>
+      <!-- Search Button -->
+    </form> <!-- End of Search Bar Form -->
+
+    <div class="navbar-nav nav-desktop"> <!-- Start of Navbar -->
+      <div class="nav-item text-nowrap d-flex">
+        {% if user.is_authenticated %} <!-- Checks to see if the user is authenticated-->
+
+        <img class="profile-img" src="/media/profile/blank_profile.png" alt="Market Hub Logo"> <!-- Market Hub Logo -->
+        <span class="navbar-text pr-l">{{user.username}}</span> <!-- Displays the logged in user username-->
+        <li class="nav-item"> <!-- Start of Nav Item -->
+          <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button class="navbar-text px-3 btn-sign-out" type="submit">Logout</button> <!-- Logout Button-->
+          </form>
+        </li> <!-- End of Nav Item -->
+        {% else%}
+        <li class="nav-item"> <!-- Start of Nav Item -->
+          <a class="nav-link px-3" href="/register">Sign Up</a> <!-- Sign Up Link-->
+        </li> <!-- End of Nav Item -->
+        <li class="nav-item">
+          <a class="nav-link px-3" href="{% url 'login' %}">Login</a> <!-- Login Link-->
+        </li>
+        {% endif %}
+      </div>
+    </div>
+  </nav> <!-- End of Navbar -->
+
+  <div class="container-fluid">
+    <div class="row">
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <div class="position-sticky pt-3 sidebar-sticky">
+          <ul class="nav flex-column">
+            <h6
+              class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1">
+              <span>My Account</span> <!-- My Account Details -->
+            </h6>
+            <li class="nav-item"> <!-- Start of Nav Item -->
+              <a class="nav-link" href="/create-listing"> <!-- Create Listing Link -->
+                <span data-feather="file" class="align-text-bottom"></span>
+                Create Listing
+              </a>
+            </li> <!-- End of Navbar -->
+
+            <li class="nav-item"> <!-- Start of Nav Item -->
+              <a class="nav-link" href="/my-listing"> <!-- My Listing Link -->
+                <span data-feather="file" class="align-text-bottom"></span>
+                My Listings
+              </a>
+            </li> <!-- End of Navbar -->
+
+            <li class="nav-item"> <!-- Start of Nav Item -->
+              <a class="nav-link" href="/my-orders"> <!-- My Orders Link -->
+                <span data-feather="file" class="align-text-bottom"></span>
+                My Orders
+              </a>
+            </li> <!-- End of Navbar -->
+
+            <div class="mobile-display">
+            {% if user.is_authenticated %} <!-- Checks to see if the user is authenticated-->
+
+              <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1">
+                <span>{{user.username}}</span> <!-- My Account Details -->
+              </h6>
+
+              <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button class="btn-mobile" type="submit">Logout</button> <!-- Logout Button-->
+              </form>
+
+            {% else%}
+
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+              <span>Account</span> <!-- My Account Details -->
+            </h6>
+
+              <li class="nav-item"> <!-- Start of Nav Item -->
+                <a class="nav-link px-3" href="/register">Sign Up</a> <!-- Sign Up Link-->
+              </li> <!-- End of Nav Item -->
+              <li class="nav-item">
+                <a class="nav-link px-3" href="{% url 'login' %}">Login</a> <!-- Login Link-->
+              </li>
+            {% endif %}
+
+          </div>
+
+          </ul>
+        </div>
+      </nav>
+
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4"> <!-- Start of Main -->
+        <div class="container"> <!-- Start of Container -->
+          {% block content %}
+          {% endblock %}
+        </div> <!-- End of Container -->
+      </main> <!-- End of Main -->
+    </div>
+  </div>
+
+  <script src="{% static 'js/bootstrap.js' %}"></script> <!-- Bootstrap javascript -->
+
+</body> <!-- End of Body -->
+
+</html>
